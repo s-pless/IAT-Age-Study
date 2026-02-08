@@ -16,52 +16,52 @@ define(['managerAPI',
 
     //Randomly select which of two sets of category labels to use.
     let raceSet = API.shuffle(['a','b'])[0];
-    let blackLabels = [];
-    let whiteLabels = [];
+    let oldLabels = [];
+    let youngLabels = [];
 
     if (raceSet == 'a') {
-        blackLabels.push('African Americans');
-        whiteLabels.push('European Americans');
+        oldLabels.push('Ältere Personen');
+        youngLabels.push('Jüngere Personen');
     } else {
-        blackLabels.push('Black people');
-        whiteLabels.push('White people');
+        oldLabels.push('Alte Menschen');
+        youngLabels.push('Junge Menschen');
     }
 
     API.addGlobal({
-        raceiat:{},
+        ageiat:{},
         //YBYB: change when copying back to the correct folder
         baseURL: './images/',
         raceSet:raceSet,
-        blackLabels:blackLabels,
-        whiteLabels:whiteLabels,
+        oldLabels:oldLabels,
+        youngLabels:youngLabels,
         //Select randomly what attribute words to see. 
         //Based on Axt, Feng, & Bar-Anan (2021).
-        posWords : API.shuffle([
-            'Love', 'Cheer', 'Friend', 'Pleasure',
-            'Adore', 'Cheerful', 'Friendship', 'Joyful', 
-            'Smiling','Cherish', 'Excellent', 'Glad', 
-            'Joyous', 'Spectacular', 'Appealing', 'Delight', 
-            'Excitement', 'Laughing', 'Attractive','Delightful', 
-            'Fabulous', 'Glorious', 'Pleasing', 'Beautiful', 
-            'Fantastic', 'Happy', 'Lovely', 'Terrific', 
-            'Celebrate', 'Enjoy', 'Magnificent', 'Triumph'
+		posWords : API.shuffle([
+            'Liebe', 'Freude', 'Freund', 'Genuss',
+            'Anbeten', 'Fröhlich', 'Freundschaft', 'Freudig',
+			'Lächelnd','Schätzen', 'Ausgezeichnet', 'Froh',
+			'Freudenreich', 'Spektakulär', 'Ansprechend', 'Freude',
+			'Aufregung', 'Lachend', 'Attraktiv','Entzückend',
+			'Fabelhaft', 'Glorreich', 'Angenehm', 'Schön',
+			'Fantastisch', 'Glücklich', 'Lieblich', 'Großartig',
+			'Feiern', 'Genießen', 'Prächtig', 'Triumph'
         ]), 
         negWords : API.shuffle([
-            'Abuse', 'Grief', 'Poison', 'Sadness', 
-            'Pain', 'Despise', 'Failure', 'Nasty', 
-            'Angry', 'Detest', 'Horrible', 'Negative', 
-            'Ugly', 'Dirty', 'Gross', 'Evil', 
-            'Rotten','Annoy', 'Disaster', 'Horrific',  
-            'Scorn', 'Awful', 'Disgust', 'Hate', 
-            'Humiliate', 'Selfish', 'Tragic', 'Bothersome', 
-            'Hatred', 'Hurtful', 'Sickening', 'Yucky'
+          'Missbrauch', 'Trauer', 'Gift', 'Traurigkeit',
+			'Schmerz', 'Verachten', 'Versagen', 'Gemein',
+			'Wütend', 'Hassen', 'Schrecklich', 'Negativ',
+			'Hässlich', 'Schmutzig', 'Ekelhaft', 'Böse',
+			'Verdorben','Ärgern', 'Katastrophe', 'Grauenhaft',
+			'Verachtung', 'Furchtbar', 'Ekel', 'Hass',
+			'Demütigen', 'Selbstsüchtig', 'Tragisch', 'Lästig',
+			'Hassgefühl', 'Verletzend', 'Widerlich', 'Igitt'
         ])
     });
 
     API.addTasksSet({
         instructions: [{
             type: 'message',
-            buttonText: 'Continue'
+            buttonText: 'Fortfahren'
         }],
 
         intro: [{
@@ -77,7 +77,7 @@ define(['managerAPI',
             name: 'raceiat_instructions',
             templateUrl: 'raceiat_instructions.jst',
             title: 'IAT Instructions',
-            header: 'Implicit Association Test'
+            header: 'Impliziter Assoziationstest'
         }],
 
         explicits: [{
@@ -96,10 +96,10 @@ define(['managerAPI',
             type: 'message',
             name: 'lastpage',
             templateUrl: 'lastpage.jst',
-            title: 'End',
+            title: 'Ende',
             //Uncomment the following if you want to end the study here.
             //last:true, 
-            header: 'You have completed the study'
+            header: 'Sie haben die Studie beendet'
         }], 
         
         //Use if you want to redirect the participants elsewhere at the end of the study
@@ -110,13 +110,13 @@ define(['managerAPI',
         }],
 		
 		//This task waits until the data are sent to the server.
-        uploading: uploading_task({header: 'just a moment', body:'Please wait, sending data... '})
+        uploading: uploading_task({header: 'einen Moment bitte', body:'Bitte warten, Daten werden gesendet... '})
     });
 
     API.addSequence([
         { type: 'isTouch' }, //Use Minno's internal touch detection mechanism. 
         
-        { type: 'post', path: ['$isTouch', 'raceSet', 'blackLabels', 'whiteLabels'] },
+        { type: 'post', path: ['$isTouch', 'raceSet', 'oldLabels', 'youngLabels'] },
 
         // apply touch only styles
         {
